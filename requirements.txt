@@ -34,4 +34,6 @@ coverage==5.2.1
 # Static and Media Storage
 django-storages==1.9.1
 boto3==1.14.28
+Pillow==8.0.1
+
 
