@@ -5,6 +5,7 @@ services:
     image: postgres:11.6
     ports:
       - "5432:5432"
+    container_name: "phoad_postgres"
   web:
     restart: always
     environment:
@@ -21,6 +22,7 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+    container_name: "phoad_server"
   documentation:
     restart: always
     build: ./

@@ -4,18 +4,19 @@ import dj_database_url
 
 from .common import Common
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-class Test(Common):
+
+class Debug(Common):
     DEBUG = True
 
     DATABASES = {
         'default': dj_database_url.config(
-            default='postgres://postgres:@postgres:5432/postgres',
+            default='postgres://postgres:@localhost:5432/postgres',
             conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
         )
     }
 
     # Testing
     INSTALLED_APPS = Common.INSTALLED_APPS
-    SECRET_KEY = 'test'
-    TEST_REQUEST_RENDERER_CLASSES = ['multipart/form-data']
+    SECRET_KEY = 'local'
