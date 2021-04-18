@@ -7,7 +7,7 @@ from phoad.photosmap.serializers import PhotoSerializer
 from phoad.users.permissions import IsUserOrReadOnly
 
 
-class PhotosViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class PhotosViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
     permission_classes = (IsAuthenticated, IsUserOrReadOnly,)
@@ -15,5 +15,6 @@ class PhotosViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
