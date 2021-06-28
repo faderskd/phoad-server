@@ -1,26 +1,18 @@
 import datetime
 
-import factory
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.urls import reverse
 from django.conf import settings
 from nose.tools import eq_
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from phoad.tests.factories import UserFactory
+from tests.utils import IntegrationTest
 
 
-class PhotosTestCase(APITestCase):
+class PhotosTestCase(IntegrationTest):
     """
     Tests /photos list operations.
     """
-
-    def setUp(self):
-        self.photos_url = reverse('photo-list')
-        self.users_url = reverse('user-list')
-        self.user_data = factory.build(dict, FACTORY_CLASS=UserFactory)
-        self.user_data['token'] = self.create_user(self.user_data)
 
     def test_should_throw_401_when_uploading_photo_without_credentials(self):
         # given
@@ -59,7 +51,8 @@ class PhotosTestCase(APITestCase):
             'latitude': 37.785834,
             'longitude': -122.406417,
             'image': self.create_image(),
-            'timestamp': datetime.datetime.now()
+            'timestamp': datetime.datetime.now(),
+            'name': 'testfile'
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_data["token"]}')
 
@@ -85,11 +78,6 @@ class PhotosTestCase(APITestCase):
         # then
         eq_(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def create_user(self, user):
-        response = self.client.post(self.users_url, user)
-        eq_(response.status_code, status.HTTP_201_CREATED)
-        return response.data['auth_token']
-
     def create_image(self):
         image_path = "%s/tests/resources/cat-mask.jpg" % settings.BASE_DIR
         with open(image_path, 'rb') as f:
@@ -103,3 +91,12 @@ class PhotosTestCase(APITestCase):
             image = SimpleUploadedFile(name='cat-mask.js', content=f.read(),
                                        content_type='image/jpg')
         return image
+
+
+class PhotosListBasedOnLocationTestCase(IntegrationTest):
+    def test_should_throw_401_in_case_of_getting_location_without_credentials(self):
+        # when
+        response = self.client.get(self.photos_at_location_url)
+
+        # then
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)

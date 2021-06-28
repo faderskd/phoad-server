@@ -198,3 +198,6 @@ class Common(Configuration):
             'rest_framework.authentication.TokenAuthentication',
         )
     }
+
+    # App settings
+    MAX_LOCATION_DIFF = 0.01
