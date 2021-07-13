@@ -3,10 +3,10 @@ from os.path import join
 from distutils.util import strtobool
 import dj_database_url
 from configurations import Configuration
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class Common(Configuration):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     INSTALLED_APPS = (
         'django.contrib.admin',
@@ -16,14 +16,14 @@ class Common(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
 
-
         # Third party apps
-        'rest_framework',            # utilities for rest apis
+        'rest_framework',  # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
-        'django_filters',            # for filtering rest endpoints
+        'django_filters',  # for filtering rest endpoints
 
         # Your apps
-        'Phoad.users',
+        'phoad.users',
+        'phoad.photosmap',
 
     )
 
@@ -39,9 +39,9 @@ class Common(Configuration):
     )
 
     ALLOWED_HOSTS = ["*"]
-    ROOT_URLCONF = 'Phoad.urls'
+    ROOT_URLCONF = 'phoad.urls'
     SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-    WSGI_APPLICATION = 'Phoad.wsgi.application'
+    WSGI_APPLICATION = 'phoad.wsgi.application'
 
     # Email
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -185,6 +185,7 @@ class Common(Configuration):
     # Django Rest Framework
     REST_FRAMEWORK = {
         'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+        'EXCEPTION_HANDLER': 'phoad.exception_handling.validation_exception_handler',
         'PAGE_SIZE': int(os.getenv('DJANGO_PAGINATION_LIMIT', 10)),
         'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
         'DEFAULT_RENDERER_CLASSES': (
@@ -195,7 +196,9 @@ class Common(Configuration):
             'rest_framework.permissions.IsAuthenticated',
         ],
         'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
         )
     }
+
+    # App settings
+    MAX_LOCATION_DIFF = 0.01
