@@ -29,9 +29,9 @@ class PhotosListBasedOnLocation(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        latitude = self.kwargs.get('latitude')
-        longitude = self.kwargs.get('longitude')
-        threshold = self.kwargs.get('location-threshold', inf)
+        latitude = self.request.query_params.get('latitude')
+        longitude = self.request.query_params.get('longitude')
+        threshold = self.request.query_params.get('location-threshold', inf)
 
         location = LocationValidator.validate(latitude, longitude)
         validated_threshold = LocationThresholdValidator.validate(threshold)
@@ -41,4 +41,4 @@ class PhotosListBasedOnLocation(generics.ListAPIView):
         return Photo.objects.filter(latitude__gte=location_diff.min_latitude,
                                     latitude__lte=location_diff.max_latitude,
                                     longitude__gte=location_diff.min_longitude,
-                                    longitude__lte=location_diff.max_longitude)
+                                    longitude__lte=location_diff.max_longitude).order_by("-timestamp")

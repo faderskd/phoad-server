@@ -18,20 +18,20 @@ class LocationValidator:
 
 
 class LocationThreshold:
-    def __init__(self, threshold: int):
+    def __init__(self, threshold: float):
         self.threshold = threshold
 
 
 class LocationThresholdValidator:
     @staticmethod
-    def validate(threshold: int) -> LocationThreshold:
+    def validate(threshold: float) -> LocationThreshold:
         if not threshold:
             raise InvalidLocationArguments("Threshold must not be null")
         try:
-            threshold = int(threshold)
+            threshold = float(threshold)
             return LocationThreshold(threshold)
         except Exception:
-            raise InvalidLocationArguments("Threshold must be integer number")
+            raise InvalidLocationArguments("Threshold must be float number")
 
 
 class LocationDiff:

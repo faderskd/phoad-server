@@ -37,3 +37,10 @@ DJANGO_CONFIGURATION=Debug;PYTHON_PATH=/path/to/app/directory/Phoad-server/phoad
 ```bash
 docker-compose run --rm web bash -c "python wait_for_postgres.py && ./manage.py test" && docker kill (docker ps --filter "name=phoad_postgres" -q)
 ```
+
+# Intellij test debug
+Custom Settings
+/path/to/project/Phoad-server/phoad/config/debug.py
+
+Environment
+DJANGO_CONFIGURATION=Debug;PYTHON_PATH=/path/to/project/Phoad-server/phoad
