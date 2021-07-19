@@ -8,6 +8,7 @@ RUN pip install -r requirements.txt
 # Adds our application code to the image
 COPY . code
 WORKDIR code
+ENV PYTHONPATH /code/phoad
 
 EXPOSE 8000
 
