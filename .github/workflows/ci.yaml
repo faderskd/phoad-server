@@ -16,4 +16,4 @@ jobs:
         run: docker-compose build
 
       - name: Run tests
-        run: docker-compose run --rm web bash -c "python wait_for_postgres.py && ./manage.py test" && docker kill (docker ps --filter "name=phoad-server_postgres" -q)
+        run: docker-compose run --rm web bash -c "python wait_for_postgres.py && ./manage.py test" && docker kill $(docker ps --filter "name=phoad-server_postgres" -q)
