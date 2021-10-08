@@ -3,3 +3,6 @@ test_local:
 
 database:
 	docker-compose run -p "5432:5432" --rm postgres
+
+requirements:
+	pipenv run pip freeze > requirements.txt

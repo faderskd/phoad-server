@@ -25,7 +25,7 @@ docker-compose run --rm web [command]
 # Local Development for app debug
 ```bash
 docker-compose run -p "5432:5432" --rm postgres
-set -x DJANGO_CONFIGURATION Debug;python manage.py migrate
+PYTHONPATH="./phoad/" python manage.py migrate --settings=phoad.config.debug --configuration=Debug
 ```
 
 Run app in debug mode using `debug.py` config. Use the following configuration in your IDE:
@@ -43,4 +43,4 @@ Custom Settings
 /path/to/project/Phoad-server/phoad/config/debug.py
 
 Environment
-DJANGO_CONFIGURATION=Debug;PYTHON_PATH=/path/to/project/Phoad-server/phoad
+DJANGO_CONFIGURATION=Debug;PYTHONPATH=/path/to/project/Phoad-server/phoad

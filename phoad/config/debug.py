@@ -2,7 +2,7 @@ import os
 
 import dj_database_url
 
-from utils import merge_dicts
+from phoad.utils import merge_dicts
 from .common import Common
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

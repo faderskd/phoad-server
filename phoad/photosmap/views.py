@@ -2,6 +2,7 @@ from math import inf
 
 from django.conf import settings
 from rest_framework import mixins, viewsets, status, generics
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -24,9 +25,14 @@ class PhotosViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.Gen
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 200
+
+
 class PhotosListBasedOnLocation(generics.ListAPIView):
     serializer_class = PhotoSerializer
     permission_classes = (IsAuthenticated,)
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         latitude = self.request.query_params.get('latitude')
