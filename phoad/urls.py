@@ -6,7 +6,7 @@ from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
 
-from photosmap.views import PhotosListBasedOnLocation
+from .photosmap.views import PhotosListBasedOnLocation
 from .photosmap.views import PhotosViewSet
 from .users.views import UserViewSet, UserCreateViewSet
 

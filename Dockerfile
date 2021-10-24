@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9.0
 ENV PYTHONUNBUFFERED 1
 
 # Allows docker to cache installed dependencies between builds
@@ -8,6 +8,7 @@ RUN pip install -r requirements.txt
 # Adds our application code to the image
 COPY . code
 WORKDIR code
+ENV PYTHONPATH /code/phoad
 
 EXPOSE 8000
 
