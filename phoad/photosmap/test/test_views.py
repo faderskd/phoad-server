@@ -77,6 +77,55 @@ class PhotosTestCase(IntegrationTest):
         # then
         eq_(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_should_delete_photo(self):
+        # given
+        post_data = {
+            'latitude': 37.785834,
+            'longitude': -122.406417,
+            'image': self.create_image(),
+            'timestamp': datetime.datetime.now(),
+            'name': 'testfile'
+        }
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_data["token"]}')
+        self.client.post(self.photos_url, post_data, 'multipart')
+
+        # when
+        response = self.client.delete(self.photos_url + "testfile/")
+
+        # then
+        eq_(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_should_throw_404_when_deleting_not_existing_photo(self):
+        # given
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_data["token"]}')
+
+        # when
+        response = self.client.delete(self.photos_url + "not-existing-photo/")
+
+        # then
+        eq_(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_should_throw_404_when_trying_to_delete_not_owned_photo(self):
+        # given
+        post_data = {
+            'latitude': 37.785834,
+            'longitude': -122.406417,
+            'image': self.create_image(),
+            'timestamp': datetime.datetime.now(),
+            'name': 'testfile'
+        }
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_data["token"]}')
+        self.client.post(self.photos_url, post_data, 'multipart')
+
+        # given
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.other_user_data["token"]}')
+
+        # when
+        response = self.client.delete(self.photos_url + "testfile/")
+
+        # then
+        eq_(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def create_js_file(self):
         image_path = "%s/tests/resources/file.js" % settings.BASE_DIR
         with open(image_path, 'rb') as f:

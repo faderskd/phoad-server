@@ -18,6 +18,9 @@ class IntegrationTest(APITestCase):
         self.user_data = factory.build(dict, FACTORY_CLASS=UserFactory)
         self.user_data['token'] = self.create_user(self.user_data)
 
+        self.other_user_data = factory.build(dict, FACTORY_CLASS=UserFactory)
+        self.other_user_data['token'] = self.create_user(self.other_user_data)
+
     def create_user(self, user):
         response = self.client.post(self.users_url, user)
         eq_(response.status_code, status.HTTP_201_CREATED)

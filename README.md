@@ -1,6 +1,5 @@
 # Phoad-server
 
-[![Build Status](https://travis-ci.org/faderskd/Phoad-server.svg?branch=master)](https://travis-ci.org/faderskd/Phoad-server)
 [![Built with](https://img.shields.io/badge/Built_with-Cookiecutter_Django_Rest-F7B633.svg)](https://github.com/agconti/cookiecutter-django-rest)
 
 App for memorizing your photos at specific locations. Check out the project's [documentation](http://faderskd.github.io/Phoad-server/).
@@ -11,9 +10,9 @@ App for memorizing your photos at specific locations. Check out the project's [d
 
 # Local Development in Docker
 
-Start the dev server for local development:
+Start the dev server:
 ```bash
-docker-compose up
+make run_docker_app
 ```
 
 Run a command inside the docker container:
@@ -22,25 +21,26 @@ Run a command inside the docker container:
 docker-compose run --rm web [command]
 ```
 
-# Local Development for app debug
+# Local Development without Docker
 ```bash
-docker-compose run -p "5432:5432" --rm postgres
-PYTHONPATH="./phoad/" python manage.py migrate --settings=phoad.config.debug --configuration=Debug
+terminal1: > make run_docker_database
+temrinal2: > make run_app_locally
 ```
 
-Run app in debug mode using `debug.py` config. Use the following configuration in your IDE:
+
+# Run tests in Docker
 ```bash
+make test_in_docker
+```
+
+# Run tests without Docker
+```bash
+terminal1: > make run_docker_database
+terminal2: > make test_locally
+```
+
+# Debug in Intellij
+Run app in debug mode using `debug.py` config. Use the following configuration in your IDE:
+```
 DJANGO_CONFIGURATION=Debug;PYTHON_PATH=/path/to/app/directory/Phoad-server/phoad;DJANGO_SETTINGS_MODULE=phoad.config
 ```
-
-# Run tests
-```bash
-docker-compose run --rm web bash -c "python wait_for_postgres.py && ./manage.py test" && docker kill (docker ps --filter "name=phoad_postgres" -q)
-```
-
-# Intellij test debug
-Custom Settings
-/path/to/project/Phoad-server/phoad/config/debug.py
-
-Environment
-DJANGO_CONFIGURATION=Debug;PYTHONPATH=/path/to/project/Phoad-server/phoad

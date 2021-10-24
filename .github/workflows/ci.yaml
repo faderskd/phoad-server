@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build docker images
-        run: docker-compose build
+        run: make build
 
       - name: Run tests
-        run: docker-compose run --rm web bash -c "python wait_for_postgres.py && ./manage.py test"
+        run: make test_in_docker
